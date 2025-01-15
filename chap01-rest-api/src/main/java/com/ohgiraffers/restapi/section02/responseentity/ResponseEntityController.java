@@ -96,6 +96,38 @@ public class ResponseEntityController {
     }
 
     /* 수정 해보기 */
-//    @PutMapping("/users/{userNo}")
+    @PutMapping("/users/{userNo}")
+    public ResponseEntity<?> modifyUser (@PathVariable int userNo,
+                                         @RequestBody UserDTO modifyInfo){
+                                    // postman에서 modifyInfo 입력
+        System.out.println("userNo = " + userNo);
+        System.out.println("modifyInfo = " + modifyInfo);
+        // 1단계, 회원 정보 수정을 위한 유저 특정하기
+        UserDTO foundUser =
+                users.stream().filter(user -> user.getNo() == userNo)
+                        .collect(Collectors.toList()).get(0);
 
+        // id, pwd, name 수정하기
+        foundUser.setId(modifyInfo.getId());
+        foundUser.setPwd(modifyInfo.getPwd());
+        foundUser.setName(modifyInfo.getName());
+
+        return ResponseEntity.created(URI.create("/entity/users/" + userNo)).build();
+    }
+
+    @DeleteMapping("/users/{userNo}")
+    public ResponseEntity<?> removeUser(@PathVariable int userNo){
+        System.out.println("userNo = " + userNo);
+        // userNo 1명 특정
+        UserDTO foundUser =
+                users.stream().filter(user -> user.getNo() == userNo)
+                        .collect(Collectors.toList()).get(0);
+
+        // 특정한 유저 객체 배열에서 삭제
+        users.remove(foundUser);
+
+        // 자원 삭제 관련 noContent()
+        return ResponseEntity.noContent().build();
+        // 정상 삭제 됐다면 postman에서 204 no Content 확인
+    }
 }
