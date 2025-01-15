@@ -1,15 +1,13 @@
 package com.ohgiraffers.restapi.section03.valid;
 
 import com.ohgiraffers.restapi.section02.responseentity.ResponseMessage;
-import com.ohgiraffers.restapi.section02.responseentity.UserDTO;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -48,7 +46,7 @@ public class ValidTestController {
 
         UserDTO foundUser = null;
         // userNo 조회 시 조회됨
-        if(foundUserList.size() > 0) {
+        if (foundUserList.size() > 0) {
             foundUser = foundUserList.get(0);
         } else {
             throw new UserNotFoundException("회원 정보를 찾을 수 없습니다.");
@@ -60,5 +58,12 @@ public class ValidTestController {
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(new ResponseMessage(200, "조회 성공", responseMap));
+    }
+
+    @PostMapping("/user/regist")
+    public ResponseEntity<?> registUser (@Valid @RequestBody UserDTO userDTO){
+                                    //유효성 검사 하려면 @Valid 넣어 줘야 한다.
+        System.out.println("userDTO 잘 받아 오는지 = " + userDTO);
+        return ResponseEntity.created(URI.create("valid/user/" + userDTO.getNo())).build();
     }
 }
