@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 /* comment. @Tag : 관련있는 API들의 그룹을 짓기 위한 어노테이션 */
 // 스웨거 의존성 주입하면 @Tag 사용 가능
 // 메서드 이름만 봐도 알 수 있지만, 더 상세한 설명을 위해 사용
-@Tag(name = "Spring Boot Swagger 연동 (USER 관련 기능")
+@Tag(name = "Spring Boot Swagger 연동 (USER 관련 기능)")
 @RestController
 @RequestMapping("/swagger")
 public class SwaggerController {
